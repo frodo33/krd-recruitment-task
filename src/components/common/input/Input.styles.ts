@@ -27,7 +27,10 @@ export const StyledInput = styled.input<{hasError: boolean;}>`
   &:-webkit-autofill:focus, 
   &:-webkit-autofill:active{
     -webkit-box-shadow: 0 0 0 30px white inset !important;
-}
+  }
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    font-size: ${({ theme }) => theme.fontSizes.mediumL};
+  }
 `
 
 export const StyledErrorMessage = styled.span`
@@ -51,4 +54,7 @@ export const StyledInputLabel = styled.label`
   margin: 
     ${({ theme }) => theme.mixins.spacing(2)}
     0;
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    font-size: ${({ theme }) => theme.fontSizes.mediumL};
+  }
 `

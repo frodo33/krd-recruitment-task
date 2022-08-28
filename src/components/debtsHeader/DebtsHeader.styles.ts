@@ -4,8 +4,12 @@ export const StyledDebtsHeader = styled.header`
   width: 100%;
   background: ${({ theme }) => theme.colors.primary};
   padding: 
-    ${({ theme }) => theme.mixins.spacing(6)}
+    ${({ theme }) => theme.mixins.spacing(12)}
     ${({ theme }) => theme.mixins.spacing(6)};
+
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    padding: ${({ theme }) => theme.mixins.spacing(20)};
+  }
 `
 
 export const StyledSearchButton = styled.button`
@@ -19,4 +23,7 @@ export const StyledSearchButton = styled.button`
   font-size: ${({ theme }) => theme.fontSizes.mediumS};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   text-transform: uppercase;
+  @media ${({ theme }) => theme.breakpoints.tablet} {
+    font-size: ${({ theme }) => theme.fontSizes.mediumL};
+  }
 `
