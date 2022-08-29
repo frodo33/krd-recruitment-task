@@ -1,0 +1,1 @@
+export const apiUrl = "http://rekrutacja-webhosting.it.krd.pl/api/Recruitment/"

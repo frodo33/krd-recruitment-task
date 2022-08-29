@@ -1,5 +1,8 @@
-import React, { FC } from "react"
+import { format } from "date-fns"
+import React, { FC, useEffect, useState } from "react"
 import styled from "styled-components"
+import { api } from "../../api/api"
+import { getTopDebts } from "../../api/routes"
 
 const StyledTable = styled.table`
   display: block;
@@ -39,9 +42,54 @@ const StyledTableBody = styled.tbody`
   
 `
 
+interface TableRowProps {
+
+}
+
+export const TableRow: FC<any> = ({ record }) => {
+  const {
+    Name: name,
+    NIP: nip,
+    Price: price,
+    Date: date
+  } = record
+
+  const formatPrice = (price: number) => {
+    return `${(price / 100).toFixed(2)} zł`
+  }
+  
+  return (
+    <tr>
+      <td>{name}</td>
+      <td>{nip}</td>
+      <td>{formatPrice(price)}</td>
+      <td>{format(new Date(date), "dd/MM/yyyy")}</td>
+    </tr>
+  )
+}
+
 interface DebtsTableProps {}
 
 export const DebtsTable: FC<DebtsTableProps> = () => {
+  const [data, setData] = useState<any>([])
+
+  const fetchTopDebts = async () => {
+    try {
+      const { data } = await api.request({
+        ...getTopDebts
+      })
+      setData(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchTopDebts()
+  },[])
+
+  const rows = data.map((el: any) => <TableRow key={el.Id} record={el} />)
+
   return (
     <StyledTable>
       <StyledTableHeader>
@@ -53,24 +101,7 @@ export const DebtsTable: FC<DebtsTableProps> = () => {
         </tr>
       </StyledTableHeader>
       <StyledTableBody>
-        <tr>
-          <td>asdf qwer qwer qwer</td>
-          <td>qwer qwer qwer qwer qwer  qwer qwer  qwer qwer qwer</td>
-          <td>asdf qwer qwer</td>
-          <td>qwer qwer qwer</td>
-        </tr>
-        <tr>
-          <td>asdf</td>
-          <td>qwer</td>
-          <td>asdf</td>
-          <td>qwer</td>
-        </tr>
-        <tr>
-          <td>asdf</td>
-          <td>qwer</td>
-          <td>asdf</td>
-          <td>qwer</td>
-        </tr>
+        {rows}
       </StyledTableBody>
     </StyledTable>
   )
