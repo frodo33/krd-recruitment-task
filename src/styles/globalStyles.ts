@@ -17,10 +17,4 @@ export const GlobalStyles = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
     box-sizing: border-box;
   }
-  
-  #telemedi-consbook-stationary-widget {
-    min-height: 300px;
-    padding: 0 20px;
-    line-height: 1.15;
-  }
 `
