@@ -12,4 +12,5 @@ export interface InputProps {
   isDisabled?: boolean;
   defaultValue?: string;
   value?: string;
+  onChangeHandler?: any;
 }

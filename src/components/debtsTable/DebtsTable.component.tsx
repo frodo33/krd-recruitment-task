@@ -3,6 +3,8 @@ import React, { FC, useEffect, useState } from "react"
 import styled from "styled-components"
 import { api } from "../../api/api"
 import { getTopDebts } from "../../api/routes"
+import { useDebts } from "../../hooks/useDebts"
+import { DebtsTableRow } from "./debtsTableRow/DebtsTableRow.component"
 
 const StyledTable = styled.table`
   display: block;
@@ -42,43 +44,18 @@ const StyledTableBody = styled.tbody`
   
 `
 
-interface TableRowProps {
-
-}
-
-export const TableRow: FC<any> = ({ record }) => {
-  const {
-    Name: name,
-    NIP: nip,
-    Price: price,
-    Date: date
-  } = record
-
-  const formatPrice = (price: number) => {
-    return `${(price / 100).toFixed(2)} zł`
-  }
-  
-  return (
-    <tr>
-      <td>{name}</td>
-      <td>{nip}</td>
-      <td>{formatPrice(price)}</td>
-      <td>{format(new Date(date), "dd/MM/yyyy")}</td>
-    </tr>
-  )
-}
-
 interface DebtsTableProps {}
 
 export const DebtsTable: FC<DebtsTableProps> = () => {
-  const [data, setData] = useState<any>([])
+  const { debts, setDebts, setInitialDebts } = useDebts()
 
   const fetchTopDebts = async () => {
     try {
       const { data } = await api.request({
         ...getTopDebts
       })
-      setData(data)
+      setInitialDebts(data)
+      setDebts(data)
     } catch (error) {
       console.log(error)
     }
@@ -88,7 +65,7 @@ export const DebtsTable: FC<DebtsTableProps> = () => {
     fetchTopDebts()
   },[])
 
-  const rows = data.map((el: any) => <TableRow key={el.Id} record={el} />)
+  const rows = debts.map((el: any) => <DebtsTableRow key={el.Id} record={el} />)
 
   return (
     <StyledTable>

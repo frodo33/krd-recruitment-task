@@ -5,6 +5,7 @@ import { Normalize } from "styled-normalize"
 import { GlobalStyles } from "./styles/globalStyles"
 import { DebtsDataPage } from "./pages/debtsDataPage/DebtsDataPage"
 import { BaseLayout } from "./layout/BaseLayout"
+import { DebtsProvider } from "./utils/debtsContext/DebtsProvider"
 
 const App = () => {
   
@@ -13,7 +14,9 @@ const App = () => {
       <Normalize />
       <GlobalStyles />
       <BaseLayout>
-        <DebtsDataPage />
+        <DebtsProvider>
+          <DebtsDataPage />
+        </DebtsProvider>
       </BaseLayout>
     </ThemeProvider>
   )

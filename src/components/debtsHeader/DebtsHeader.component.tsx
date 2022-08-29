@@ -1,8 +1,8 @@
 import React, { FC } from "react"
 import { useForm } from "react-hook-form"
-import styled from "styled-components"
 import { api } from "../../api/api"
 import { getFilteredDebts } from "../../api/routes"
+import { useDebts } from "../../hooks/useDebts"
 import { useWindowSize } from "../../hooks/useWindowSize"
 import { Flex } from "../../layout/Flex.styles"
 import { deviceType } from "../../theme/default/breakpoints"
@@ -16,6 +16,7 @@ export const DebtsHeader: FC<DebtsHeaderProps> = () => {
   const { tabletDevice } = deviceType
   const { width } = useWindowSize()
   const isDesktop = width >= tabletDevice
+  const { initialDebts, setDebts } = useDebts()
   const {
     register,
     handleSubmit,
@@ -27,18 +28,28 @@ export const DebtsHeader: FC<DebtsHeaderProps> = () => {
   })
 
   const filterDebts = async ({ debtsSearch }: any) => {
-    console.log(debtsSearch, "lol")
     try {
-      const { data } = await api.request({
-        ...getFilteredDebts,
-        data: {
-          "NIP": debtsSearch,
-          "Name": debtsSearch
-        }
-      })
+      if(debtsSearch.length < 3) {
+        setDebts(initialDebts)
+      } else {
+        const { data } = await api.request({
+          ...getFilteredDebts,
+          data: {
+            "NIP": debtsSearch,
+            "Name": debtsSearch
+          }
+        })
+        setDebts(data)
+      }
     }
     catch (error) {
       console.log(error, "error")
+    }
+  }
+
+  const handleChange = (ev: any) => {
+    if(ev.target.value.length < 3) {
+      setDebts(initialDebts)
     }
   }
 
@@ -57,10 +68,9 @@ export const DebtsHeader: FC<DebtsHeaderProps> = () => {
           label="Podaj nip lub nazwę dłużnika"
           register={register}
           errors={errors}
+          onChangeHandler={handleChange}
         />
-        <StyledSearchButton
-          // onClick={handleClick}
-        >
+        <StyledSearchButton>
           Szukaj
         </StyledSearchButton>
       </Flex>

@@ -19,6 +19,7 @@ export const Input: FC<InputProps> = ({
   errors,
   isDisabled,
   defaultValue,
+  onChangeHandler,
   value,
 }) => {
   const hasError = !!errors?.[name]
@@ -54,7 +55,7 @@ export const Input: FC<InputProps> = ({
           placeholder={placeholder}
           hasError={hasError}
           value={value}
-          // onChange={handleChange}
+          onChange={onChangeHandler}
           disabled={isDisabled}
         />
         {children}
