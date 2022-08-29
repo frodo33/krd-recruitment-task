@@ -1,11 +1,12 @@
 import React, { FC } from "react"
 import { format } from "date-fns"
+import { DebtDataModel } from "../../../utils/debtsContext/DebtsProvider.types"
 
 interface DebtsTableRowProps {
-
+  record: DebtDataModel;
 }
 
-export const DebtsTableRow: FC<any> = ({ record }) => {
+export const DebtsTableRow: FC<DebtsTableRowProps> = ({ record }) => {
   const {
     Name: name,
     NIP: nip,

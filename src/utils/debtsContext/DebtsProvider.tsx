@@ -1,17 +1,53 @@
-import React, { FC, ReactNode, SetStateAction, useState } from "react"
-import { DebtsContextData } from "./DebtsProvider.types"
+import React, { FC, ReactNode, useState } from "react"
+import { api } from "../../api/api"
+import { getFilteredDebts, getTopDebts } from "../../api/routes"
+import { DebtDataModel, DebtsContextData } from "./DebtsProvider.types"
 
 export const DebtsContext = React.createContext<DebtsContextData>({} as DebtsContextData)
 
-export const DebtsProvider: FC<{children: any}> = ({ children }) => {
-  const [initialDebts, setInitialDebts] = useState<any>([])
-  const [debts, setDebts] = useState<any>([])
+export const DebtsProvider: FC<{children: ReactNode}> = ({ children }) => {
+  const [initialDebts, setInitialDebts] = useState<DebtDataModel[]>([])
+  const [debts, setDebts] = useState<DebtDataModel[]>([])
+
+  const fetchTopDebts = async () => {
+    try {
+      const { data } = await api.request({
+        ...getTopDebts
+      })
+      setInitialDebts(data)
+      setDebts(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const filterDebts = async ({ debtsSearch }: any) => {
+    try {
+      if(debtsSearch.length < 3) {
+        setDebts(initialDebts)
+      } else {
+        const { data } = await api.request({
+          ...getFilteredDebts,
+          data: {
+            "NIP": debtsSearch,
+            "Name": debtsSearch
+          }
+        })
+        setDebts(data)
+      }
+    }
+    catch (error) {
+      console.log(error, "error")
+    }
+  }
 
   const getContext = () => ({
     initialDebts,
     setInitialDebts,
     debts,
     setDebts,
+    fetchTopDebts,
+    filterDebts,
   })
 
   return (

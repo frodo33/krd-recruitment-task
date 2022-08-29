@@ -1,8 +1,6 @@
 import React, { FC, FormEvent } from "react"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form"
-import { api } from "../../api/api"
-import { getFilteredDebts } from "../../api/routes"
 import { useDebts } from "../../hooks/useDebts"
 import { useValidation } from "../../hooks/useValidation"
 import { useWindowSize } from "../../hooks/useWindowSize"
@@ -18,12 +16,11 @@ export const DebtsHeader: FC<DebtsHeaderProps> = () => {
   const { tabletDevice } = deviceType
   const { width } = useWindowSize()
   const isDesktop = width >= tabletDevice
-  const { initialDebts, setDebts } = useDebts()
+  const { initialDebts, setDebts, filterDebts } = useDebts()
   const { searchSchema } = useValidation()
   const {
     register,
     handleSubmit,
-    setError,
     clearErrors,
     formState: { errors },
   } = useForm({
@@ -31,28 +28,6 @@ export const DebtsHeader: FC<DebtsHeaderProps> = () => {
     mode: "all",
     resolver: yupResolver(searchSchema),
   })
-
-  console.log(errors, "errors")
-
-  const filterDebts = async ({ debtsSearch }: any) => {
-    try {
-      if(debtsSearch.length < 3) {
-        setDebts(initialDebts)
-      } else {
-        const { data } = await api.request({
-          ...getFilteredDebts,
-          data: {
-            "NIP": debtsSearch,
-            "Name": debtsSearch
-          }
-        })
-        setDebts(data)
-      }
-    }
-    catch (error) {
-      console.log(error, "error")
-    }
-  }
 
   const handleChange = (event: FormEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement
