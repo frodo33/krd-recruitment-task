@@ -3,6 +3,7 @@ import styled, { css } from "styled-components"
 export const StyledInputWrapper = styled.div`
   position: relative;
   width: 100%;
+  max-height: 44px;
 `
 
 export const StyledInput = styled.input<{hasError: boolean;}>`
@@ -35,7 +36,7 @@ export const StyledInput = styled.input<{hasError: boolean;}>`
 
 export const StyledErrorMessage = styled.span`
   font-size: ${({ theme }) => theme.fontSizes.small};
-  color: ${({ theme }) => theme.colors.action};
+  color: ${({ theme }) => theme.colors.white};
   padding-top: ${({ theme }) => theme.mixins.spacing(1)};
   & svg {
     height: ${({ theme }) => theme.fontSizes.small};

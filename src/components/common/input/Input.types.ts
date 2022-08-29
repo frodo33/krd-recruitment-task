@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import { ReactNode, FormEvent } from "react"
 import { UseFormRegister, FieldValues, FieldErrors } from "react-hook-form"
 
 export interface InputProps {
@@ -12,5 +12,5 @@ export interface InputProps {
   isDisabled?: boolean;
   defaultValue?: string;
   value?: string;
-  onChangeHandler?: any;
+  onChangeHandler?(event: FormEvent<HTMLInputElement>): void;
 }

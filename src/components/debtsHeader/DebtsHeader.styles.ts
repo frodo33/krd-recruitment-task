@@ -23,6 +23,7 @@ export const StyledSearchButton = styled.button`
   font-size: ${({ theme }) => theme.fontSizes.mediumS};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   text-transform: uppercase;
+  cursor: pointer;
   @media ${({ theme }) => theme.breakpoints.tablet} {
     font-size: ${({ theme }) => theme.fontSizes.mediumL};
   }

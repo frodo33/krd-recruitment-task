@@ -1,5 +1,4 @@
-import React, { FC, ReactElement, useEffect, useState } from "react"
-// import { ReactComponent as WarningIcon } from "../../../../assets/icons/warning.svg"
+import React, { FC, ReactElement } from "react"
 import { InputProps } from "./Input.types"
 import { Flex } from "../../../layout/Flex.styles"
 import {
@@ -8,6 +7,7 @@ import {
   StyledErrorMessage,
   StyledInputLabel
 } from "./Input.styles"
+import { FieldErrors } from "react-hook-form"
 
 export const Input: FC<InputProps> = ({
   children,
@@ -17,31 +17,20 @@ export const Input: FC<InputProps> = ({
   label,
   register,
   errors,
-  isDisabled,
-  defaultValue,
   onChangeHandler,
   value,
 }) => {
   const hasError = !!errors?.[name]
-  // const [isEmpty, setIsEmpty] = useState<boolean>(true)
-  // const { onChange } = register(name)
 
-  // const handleChange = (ev: React.FormEvent<HTMLInputElement>) => {
-  //   ev.target.value.length ? setIsEmpty(false) : setIsEmpty(true)
-  //   onChange(ev)
-  // }
-
-  // const mapErrors = (): JSX.Element | JSX.Element[] => {
-  //   if(errors?.[name]?.types) {
-  //     const messages = Object.values(errors[name]?.types).flatMap((value: string | unknown) => value)
-  //     return messages.map((message: string | unknown, index: number): ReactElement => <StyledErrorMessage key={index}>{message}</StyledErrorMessage>)
-  //   }
-  //   return <StyledErrorMessage>{errors?.[name]?.message}</StyledErrorMessage>
-  // }
-  
-  // useEffect(()=>{
-  //   defaultValue && setIsEmpty(false)
-  // },[])
+  const mapErrors = (errors: FieldErrors): JSX.Element | JSX.Element[] => {
+    if(errors?.[name]?.types) {
+      const messages = Object.values(errors[name]?.types as Record<string, string>).flatMap((value: string | unknown) => value)
+      return messages.map((message: string | unknown, index: number): ReactElement => (
+        <StyledErrorMessage key={index}>{message as string}</StyledErrorMessage>
+      ))
+    }
+    return <StyledErrorMessage>{errors?.[name]?.message as string}</StyledErrorMessage>
+  }
 
   return (
     <Flex direction="column">
@@ -51,15 +40,13 @@ export const Input: FC<InputProps> = ({
           id={name}
           type={type}
           {...register(name)}
-          name={name}
           placeholder={placeholder}
           hasError={hasError}
           value={value}
           onChange={onChangeHandler}
-          disabled={isDisabled}
         />
         {children}
+        {hasError && mapErrors(errors)}
       </StyledInputWrapper>
-      {/* {hasError && mapErrors()} */}
     </Flex>
   )}
