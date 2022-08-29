@@ -10,14 +10,7 @@ export const getTopDebts: RouteConfig = {
   url: "/GetTopDebts"
 }
 
-export const getFilteredDebts = (query: string): RouteConfig => ({
+export const getFilteredDebts: RouteConfig = ({
   method: "POST",
-  url: "/GetFilteredDebts"
+  url: "/GetFilteredDebts",
 })
-
-const routes = {
-  getTopDebts,
-  getFilteredDebts,
-}
-
-export default routes
