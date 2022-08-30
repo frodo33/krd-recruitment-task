@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import { useDebts } from "../../hooks/useDebts"
 import { DebtDataModel } from "../../utils/debtsContext/DebtsProvider.types"
 
@@ -41,7 +41,7 @@ export const useDebtsUtils = () => {
     setDebts(sorted)
   }
 
-  const nextMethod = (sequence: { (): void }[], current: number, setCurrent: any) => {
+  const nextMethod = (sequence: { (): void }[], current: number, setCurrent: Dispatch<SetStateAction<number>>) => {
     const next = current + 1
     setCurrent(next)
     if(current >= sequence.length-1) {

@@ -56,7 +56,7 @@ export const DebtsHeader: FC<DebtsHeaderProps> = () => {
           errors={errors}
           onChangeHandler={handleChange}
         />
-        <StyledSearchButton loading={loading}>
+        <StyledSearchButton loader={loading}>
           Szukaj
           <div><span></span></div>
         </StyledSearchButton>

@@ -1,4 +1,5 @@
 import React, { FC, ReactNode, useState } from "react"
+import { FieldValues } from "react-hook-form"
 import { api } from "../../api/api"
 import { getFilteredDebts, getTopDebts } from "../../api/routes"
 import { DebtDataModel, DebtsContextData } from "./DebtsProvider.types"
@@ -24,7 +25,7 @@ export const DebtsProvider: FC<{children: ReactNode}> = ({ children }) => {
     }
   }
 
-  const filterDebts = async ({ debtsSearch }: any) => {
+  const filterDebts = async ({ debtsSearch }: FieldValues) => {
     setError(null)
     try {
       if(debtsSearch.length < 3 && !loading) {

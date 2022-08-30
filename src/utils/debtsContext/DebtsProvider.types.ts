@@ -1,3 +1,6 @@
+import { Dispatch, SetStateAction } from "react"
+import { FieldValues, SubmitHandler } from "react-hook-form"
+
 export interface DebtDataModel {
   Address: string;
   Date: string;
@@ -12,11 +15,11 @@ export interface DebtDataModel {
 
 export type DebtsContextData = {
   initialDebts: DebtDataModel[];
-  setInitialDebts: any;
+  setInitialDebts: Dispatch<SetStateAction<DebtDataModel[]>>;
   debts: DebtDataModel[];
-  setDebts: any;
-  fetchTopDebts: any;
-  filterDebts: any;
+  setDebts: Dispatch<SetStateAction<DebtDataModel[]>>;
+  fetchTopDebts: () => void;
+  filterDebts: SubmitHandler<FieldValues>;
   loading: boolean;
   error: string | null;
 }

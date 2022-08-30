@@ -22,7 +22,7 @@ export const StyledDebtsHeader = styled.header`
   }
 `
 
-export const StyledSearchButton = styled.button<{loading: boolean}>`
+export const StyledSearchButton = styled.button<{loader: boolean}>`
   display: flex;
   align-items: center;
   background: ${({ theme }) => theme.colors.action};
@@ -42,7 +42,7 @@ export const StyledSearchButton = styled.button<{loading: boolean}>`
   & div {
     overflow: hidden;
     width: 18px;
-    max-width: ${({ loading }) => loading ? "18px" : "0"};
+    max-width: ${({ loader }) => loader ? "18px" : "0"};
     margin-left: 8px;
     transition: .05s ease-in-out;
   }
