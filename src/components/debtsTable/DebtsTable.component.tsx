@@ -2,38 +2,26 @@ import React, { FC, useEffect, useState } from "react"
 import { useDebts } from "../../hooks/useDebts"
 import { DebtDataModel } from "../../utils/debtsContext/DebtsProvider.types"
 import { StyledTable, StyledTableBody, StyledTableHeader } from "./DebtsTable.styles"
+import { useDebtsUtils } from "./DebtsTable.utils"
 import { DebtsTableRow } from "./debtsTableRow/DebtsTableRow.component"
+import { ErrorMessageRow } from "./errorMessageRow/ErrorMessageRow.component"
 
 interface DebtsTableProps {}
 
-type SortingFieldsTypes = "Name" | "NIP"
-
 export const DebtsTable: FC<DebtsTableProps> = () => {
-  const { debts, fetchTopDebts, initialDebts, setDebts } = useDebts()
+  const [currentNameSortingMethod, setCurrentNameSortingMethod] = useState<number>(0)
+  const [currentNipSortingMethod, setCurrentNipSortingMethod] = useState<number>(0)
+  const { debts, fetchTopDebts, error } = useDebts()
+  const {
+    nameSequence,
+    nipSequence,
+    ascending,
+    nextMethod,
+  } = useDebtsUtils()
 
   useEffect(() => {
     fetchTopDebts()
   },[])
-
-  const sortRecords = (columnName: SortingFieldsTypes, desc = false): void => {
-    let sorted: DebtDataModel[] = []
-    
-    if(columnName === "Name") {
-      sorted = [...debts].sort((a, b) => {
-        const textA = a.Name.toUpperCase()
-        const textB = b.Name.toUpperCase()
-        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0
-      })
-    }
-
-    if(columnName === "NIP") {
-      sorted = [...debts].sort((a, b) => Number(a.NIP) - Number(b.NIP))
-    }
-
-    desc && sorted.reverse()
-
-    setDebts(sorted)
-  }
 
   const rows = debts.map((debt: DebtDataModel) => (
     <DebtsTableRow
@@ -42,41 +30,35 @@ export const DebtsTable: FC<DebtsTableProps> = () => {
     />
   ))
 
-  const nameSequence = [
-    () => sortRecords("Name"),
-    () => sortRecords("Name", true),
-  ]
-
-  const nipSequence = [
-    () => sortRecords("NIP"),
-    () => sortRecords("NIP", true),
-  ]
-
-  const [currentNameSortingMethod, setCurrentNameSortingMethod] = useState<number>(0)
-  const [currentNipSortingMethod, setCurrentNipSortingMethod] = useState<number>(0)
-
-  const nextMethod = (sequence: { (): void }[], current: number, setCurrent: any) => {
-    const next = current + 1
-    setCurrent(next)
-    if(current >= sequence.length-1) {
-      setCurrent(0)
-    }
-    
-    sequence[current]()
-  }
-
   return (
     <StyledTable>
-      <StyledTableHeader>
+      <StyledTableHeader 
+        ascending={ascending}
+      >
         <tr>
-          <th><button onClick={() => nextMethod(nameSequence, currentNameSortingMethod, setCurrentNameSortingMethod)}>Dłużnik</button></th>
-          <th><button onClick={() => nextMethod(nipSequence, currentNipSortingMethod, setCurrentNipSortingMethod)}>NIP</button></th>
+          <th>
+            <button 
+              onClick={() => nextMethod(nameSequence, currentNameSortingMethod, setCurrentNameSortingMethod)}
+            >
+              <span>Dłużnik</span>
+            </button>
+          </th>
+          <th>
+            <button 
+              onClick={() => nextMethod(nipSequence, currentNipSortingMethod, setCurrentNipSortingMethod)}
+            >
+              <span>NIP</span>
+            </button>
+          </th>
           <th>Kwota zadłużenia</th>
           <th>Data powstania zobowiązania</th>
         </tr>
       </StyledTableHeader>
       <StyledTableBody>
-        {rows}
+        {!error 
+          ? rows
+          : <ErrorMessageRow>{error}</ErrorMessageRow>
+        }
       </StyledTableBody>
     </StyledTable>
   )

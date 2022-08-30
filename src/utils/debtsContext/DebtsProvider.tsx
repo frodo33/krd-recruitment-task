@@ -8,8 +8,11 @@ export const DebtsContext = React.createContext<DebtsContextData>({} as DebtsCon
 export const DebtsProvider: FC<{children: ReactNode}> = ({ children }) => {
   const [initialDebts, setInitialDebts] = useState<DebtDataModel[]>([])
   const [debts, setDebts] = useState<DebtDataModel[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const fetchTopDebts = async () => {
+    setError(null)
     try {
       const { data } = await api.request({
         ...getTopDebts
@@ -17,15 +20,17 @@ export const DebtsProvider: FC<{children: ReactNode}> = ({ children }) => {
       setInitialDebts(data)
       setDebts(data)
     } catch (error) {
-      console.log(error)
+      setError("Coś poszło nie tak, spróbuj później.")
     }
   }
 
   const filterDebts = async ({ debtsSearch }: any) => {
+    setError(null)
     try {
-      if(debtsSearch.length < 3) {
+      if(debtsSearch.length < 3 && !loading) {
         setDebts(initialDebts)
       } else {
+        setLoading(true)
         const { data } = await api.request({
           ...getFilteredDebts,
           data: {
@@ -34,10 +39,12 @@ export const DebtsProvider: FC<{children: ReactNode}> = ({ children }) => {
           }
         })
         setDebts(data)
+        setLoading(false)
       }
     }
     catch (error) {
-      console.log(error, "error")
+      setError("Coś poszło nie tak, spróbuj później.")
+      setLoading(false)
     }
   }
 
@@ -48,6 +55,8 @@ export const DebtsProvider: FC<{children: ReactNode}> = ({ children }) => {
     setDebts,
     fetchTopDebts,
     filterDebts,
+    loading,
+    error,
   })
 
   return (

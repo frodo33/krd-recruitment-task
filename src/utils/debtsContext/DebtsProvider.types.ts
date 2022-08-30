@@ -17,4 +17,6 @@ export type DebtsContextData = {
   setDebts: any;
   fetchTopDebts: any;
   filterDebts: any;
+  loading: boolean;
+  error: string | null;
 }

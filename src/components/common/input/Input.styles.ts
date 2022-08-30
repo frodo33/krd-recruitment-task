@@ -17,7 +17,7 @@ export const StyledInput = styled.input<{hasError: boolean;}>`
   padding-left: ${({ theme }) => theme.mixins.spacing(5)};
   caret-color: ${({ theme }) => theme.colors.primary};
   &::placeholder {
-    color: ${({ theme }) => theme.colors.secondary};
+    color: ${({ theme }) => theme.colors.textSecondary};
   }
   &:focus-visible {
     border: 2px solid ${({ theme, hasError }) => hasError ? theme.colors.action : theme.colors.secondary};

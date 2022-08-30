@@ -1,4 +1,14 @@
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
+
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`
 
 export const StyledDebtsHeader = styled.header`
   width: 100%;
@@ -12,7 +22,9 @@ export const StyledDebtsHeader = styled.header`
   }
 `
 
-export const StyledSearchButton = styled.button`
+export const StyledSearchButton = styled.button<{loading: boolean}>`
+  display: flex;
+  align-items: center;
   background: ${({ theme }) => theme.colors.action};
   color: ${({ theme }) => theme.colors.white};
   margin: 0;
@@ -26,5 +38,20 @@ export const StyledSearchButton = styled.button`
   cursor: pointer;
   @media ${({ theme }) => theme.breakpoints.tablet} {
     font-size: ${({ theme }) => theme.fontSizes.mediumL};
+  }
+  & div {
+    overflow: hidden;
+    width: 18px;
+    max-width: ${({ loading }) => loading ? "18px" : "0"};
+    margin-left: 8px;
+    transition: .05s ease-in-out;
+  }
+  & span {
+    display: block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border-left: 2px solid yellow;
+    animation: ${rotate} .8s ease-out infinite;
   }
 `

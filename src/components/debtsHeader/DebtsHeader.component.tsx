@@ -16,7 +16,7 @@ export const DebtsHeader: FC<DebtsHeaderProps> = () => {
   const { tabletDevice } = deviceType
   const { width } = useWindowSize()
   const isDesktop = width >= tabletDevice
-  const { initialDebts, setDebts, filterDebts } = useDebts()
+  const { initialDebts, setDebts, filterDebts, loading } = useDebts()
   const { searchSchema } = useValidation()
   const {
     register,
@@ -56,8 +56,9 @@ export const DebtsHeader: FC<DebtsHeaderProps> = () => {
           errors={errors}
           onChangeHandler={handleChange}
         />
-        <StyledSearchButton>
+        <StyledSearchButton loading={loading}>
           Szukaj
+          <div><span></span></div>
         </StyledSearchButton>
       </Flex>
     </StyledDebtsHeader>

@@ -25,12 +25,52 @@ export const StyledTable = styled.table`
   }
 `
 
-export const StyledTableHeader = styled.thead`
+export const StyledTableHeader = styled.thead<{ascending: boolean}>`
   width: 100%;
   text-transform: uppercase;
   font-size: ${({ theme }) => theme.fontSizes.mediumS};
   color: ${({ theme }) => theme.colors.textSecondary};
   text-align: left;
+  & button {
+    position: relative;
+    width: 100%;
+    background: transparent;
+    border: none;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: ${({ theme }) => theme.fontSizes.mediumS};
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+    color: ${({ theme }) => theme.colors.textSecondary};
+    cursor: pointer;
+    & span {
+      padding:
+        ${({ theme }) => theme.mixins.spacing(2)}
+        ${({ theme }) => theme.mixins.spacing(4)};
+      &:hover {
+        background: ${({ theme }) => theme.colors.secondary};
+      }
+    }
+    
+  }
+  & th:first-child button span {
+      position: relative;
+      padding:
+        ${({ theme }) => theme.mixins.spacing(2)}
+        ${({ theme }) => theme.mixins.spacing(10)}
+        ${({ theme }) => theme.mixins.spacing(2)}
+        ${({ theme }) => theme.mixins.spacing(2)};
+      &:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        width: 10px;
+        height: 8px;
+        background: ${({ theme }) => theme.colors.textSecondary};
+        clip-path: polygon(0% 0%,100% 0%,50% 100%,50% 100%);
+        transform: ${({ ascending }) => ascending ? "translate(0,-50%)" : "translate(0,-50%) rotate(180deg)"};
+      }
+    }
 `
 
 export const StyledTableBody = styled.tbody`
